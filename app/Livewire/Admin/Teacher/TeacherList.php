@@ -27,33 +27,33 @@ class TeacherList extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
-            
-            ->query(Teacher::query())->headerActions([
-                CreateAction::make('new')->color('success')->icon('heroicon-o-plus')->form([
-                    TextInput::make('firstname')->required(),
-                    TextInput::make('middlename'),
-                    TextInput::make('lastname')->required(),
-                    TextInput::make('phone_number')->required(),
-                    TextInput::make('email')->required(),
-                ])->modalWidth('xl')->action(
-                    function($data){
-                        $user = User::create([
-                            'name' => $data['firstname'].' '.$data['lastname'],
-                            'email' => $data['email'],
-                            'password' => bcrypt('password'),
-                            'user_type' => 'teacher', // Teacher Role ID
-                        ]);
 
-                        Teacher::create([
-                            'firstname' => $data['firstname'],
-                            'lastname' => $data['lastname'],
-                            'middlename' => $data['middlename'],
-                            'contact' => $data['phone_number'],
-                            'user_id' => $user->id,
-                        ]);
-                    }
-                )
-            ])
+            ->query(Teacher::query())->headerActions([
+                    CreateAction::make('new')->color('success')->icon('heroicon-o-plus')->form([
+                        TextInput::make('firstname')->required(),
+                        TextInput::make('middlename'),
+                        TextInput::make('lastname')->required(),
+                        TextInput::make('phone_number')->required(),
+                        TextInput::make('email')->required(),
+                    ])->modalWidth('xl')->action(
+                            function ($data) {
+                                $user = User::create([
+                                    'name' => $data['firstname'] . ' ' . $data['lastname'],
+                                    'email' => $data['email'],
+                                    'password' => bcrypt('password'),
+                                    'user_type' => 'teacher', // Teacher Role ID
+                                ]);
+
+                                Teacher::create([
+                                    'firstname' => $data['firstname'],
+                                    'lastname' => $data['lastname'],
+                                    'middlename' => $data['middlename'],
+                                    'contact' => $data['phone_number'],
+                                    'user_id' => $user->id,
+                                ]);
+                            }
+                        )
+                ])
             ->columns([
                 TextColumn::make('lastname')->label('LASTNAME')->searchable(),
                 TextColumn::make('firstname')->label('FIRSTNAME')->searchable(),
@@ -65,7 +65,12 @@ class TeacherList extends Component implements HasForms, HasTable
                 // ...
             ])
             ->actions([
-               EditAction::make('edit')->color('success')
+                EditAction::make('edit')->color('success')->form([
+                    TextInput::make('firstname')->required(),
+                    TextInput::make('middlename'),
+                    TextInput::make('lastname')->required(),
+                    TextInput::make('contact')->required(),
+                ])
             ])
             ->bulkActions([
                 // ...
