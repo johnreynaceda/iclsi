@@ -25,7 +25,9 @@ class AttendanceList extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(Attendance::query())
+            ->query(Attendance::query()->whereHas('student', function ($record) {
+                $record->where('grade_level_id', auth()->user()->teacher->grade_level_id);
+            }))
             ->columns([
                 TextColumn::make('student')->searchable()->formatStateUsing(
                     fn($record) => $record->student->lastname . ', ' . $record->student->firstname
