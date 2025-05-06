@@ -71,6 +71,9 @@ class AttendanceList extends Component implements HasForms, HasTable
                         'student_id' => $data->id,
                         'time_out' => now(),
                     ]);
+                    $contact = Parents::where('student_id', $data->id)->first()->contact;
+                    $message = "ICLS SMS\n\nGood day! This is to inform you that your child, {$data->firstname} {$data->lastname}, has left the school premises. Please be informed.";
+                    $this->sendSms($contact, $message);
                 } else {
                     // Check if time is after 8:00 AM
                     if (now()->gt(now()->setTime(8, 0))) {
@@ -93,6 +96,7 @@ class AttendanceList extends Component implements HasForms, HasTable
                     $attendance->update([
                         'time_out' => now(),
                     ]);
+
                 } else {
                     dd('already attendance');
                 }

@@ -24,7 +24,9 @@ class Report extends Component
             })->when($this->date, function ($query) {
                 $query->whereDate('created_at', $this->date);
             })->get(),
-            'activities'  => Event::all(),
+            'activities' => Event::all(),
+            'lates' => Attendance::whereTime('time_in', '>', '08:00:00')
+                ->get(),
         ]);
     }
 }
